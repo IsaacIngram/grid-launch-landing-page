@@ -67,11 +67,9 @@
       // Small client-side niceties and POST submit
       document.getElementById('year').textContent = new Date().getFullYear();
 
-      // Runtime-configured endpoint (fetched from /config)
-      let SUBMIT_ENDPOINT = null;
-      fetch('/config').then(r => r.json()).then(cfg => {
-        SUBMIT_ENDPOINT = cfg.submitEndpoint;
-      }).catch(() => { /* keep null */ });
+      // Get endpoint from Netlify environment variable injected at build time
+      // Netlify will replace process.env.SUBMIT_ENDPOINT with the actual value
+      const SUBMIT_ENDPOINT = '%SUBMIT_ENDPOINT%';
 
       const form = document.getElementById('signup-form');
       const msgEl = document.getElementById('submit-message');
@@ -116,9 +114,9 @@
         }
 
         // If no endpoint provided, show message and return
-        if(!SUBMIT_ENDPOINT){
-          // Fallback: post to a local noop (or pretend to succeed)
-          showMessage('No endpoint configured — saved locally (demo).', 'ok');
+        if(!SUBMIT_ENDPOINT || SUBMIT_ENDPOINT === '%SUBMIT_ENDPOINT%'){
+          // Fallback: endpoint not configured
+          showMessage('No endpoint configured — please contact support.', 'error');
           return;
         }
 
