@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Get on the GRID</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <h1>Get on the GRID</h1>
+        <p class="lead">From career growth to NIL deals, GRID unites athletes with the experts and brands that believe in their potential.</p>
+      </header>
+
+      <section class="features">
+        <div class="feature">
+          <h2>Athlete?</h2>
+          <p>Manage your money and maximize your NIL opportunities with our trusted advisor network.</p>
+        </div>
+        <div class="feature">
+          <h2>Company?</h2>
+          <p>Collaborate with emerging talent, build brand loyalty, and be a part of the newest community sharing sports partnerships.</p>
+        </div>
+        <div class="feature">
+          <h2>Advisor?</h2>
+          <p>Connect with driven young athletes who are seeking experts in money management and long-term planning.</p>
+        </div>
+      </section>
+
+      <section class="signup">
+        <p class="signup-header">Interested? Sign up for updates.</p>
+        <p class="signup-note">You'll be notified when GRID launches so you can be one of the first to contribute to the platform.</p>
+        <form id="signup-form" action="#" method="post" onsubmit="return false;">
+          <div class="field">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+          </div>
+
+          <div class="field">
+            <label for="interest">Your role</label>
+            <select id="interest" name="interest">
+              <option value="athlete">Athlete</option>
+              <option value="advisor">Advisor</option>
+              <option value="company">Company</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+
+        <div class="coming-soon">Coming soon</div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <small>© <span id="year"></span> GRID — All rights reserved.</small>
+    </footer>
+
+    <script>
+      // Small client-side niceties (no backend integration)
+      document.getElementById('year').textContent = new Date().getFullYear();
+      document.getElementById('signup-form').addEventListener('submit', function(e){
+        e.preventDefault();
+        alert('Thanks! We saved your signup locally (not submitted).');
+      });
+    </script>
+  </body>
+</html>
