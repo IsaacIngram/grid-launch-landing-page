@@ -18,6 +18,13 @@ function sendFile(res, filepath, contentType){
 }
 
 const server = http.createServer((req, res) => {
+  // Provide a small JSON config endpoint so the client can read runtime env vars
+  if (req.url === '/config') {
+    const cfg = { submitEndpoint: process.env.SUBMIT_ENDPOINT || null };
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(cfg));
+    return;
+  }
   let reqPath = req.url.split('?')[0];
   if(reqPath === '/') reqPath = '/index.html';
   const filePath = path.join(publicDir, decodeURIComponent(reqPath));

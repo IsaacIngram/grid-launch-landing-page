@@ -31,7 +31,7 @@
       <section class="signup">
         <p class="signup-header">Interested? Sign up for updates.</p>
         <p class="signup-note">You'll be notified when GRID launches so you can be one of the first to contribute to the platform.</p>
-        <form id="signup-form" action="#" method="post" onsubmit="return false;">
+  <form id="signup-form" action="#" method="post" onsubmit="return false;">
           <div class="field">
             <label for="email">Email address</label>
             <input id="email" name="email" type="email" placeholder="you@example.com" required>
@@ -53,19 +53,94 @@
         </form>
 
         <div class="coming-soon">Coming soon</div>
+
+        <!-- Message area for submit feedback -->
+        <div id="submit-message" aria-live="polite" class="submit-message" style="display:none"></div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <small>© <span id="year"></span> GRID — All rights reserved.</small>
+      <small>© <span id="year"></span> GRID LLC</small>
     </footer>
 
     <script>
-      // Small client-side niceties (no backend integration)
+      // Small client-side niceties and POST submit
       document.getElementById('year').textContent = new Date().getFullYear();
-      document.getElementById('signup-form').addEventListener('submit', function(e){
+
+      // Runtime-configured endpoint (fetched from /config)
+      let SUBMIT_ENDPOINT = null;
+      fetch('/config').then(r => r.json()).then(cfg => {
+        SUBMIT_ENDPOINT = cfg.submitEndpoint;
+      }).catch(() => { /* keep null */ });
+
+      const form = document.getElementById('signup-form');
+      const msgEl = document.getElementById('submit-message');
+
+      function parseCssTime(s){
+        // simple parser: supports 'ms' and 's'
+        if(!s) return 5000;
+        s = s.trim();
+        if(s.endsWith('ms')) return parseFloat(s.slice(0, -2));
+        if(s.endsWith('s')) return parseFloat(s.slice(0, -1)) * 1000;
+        return parseFloat(s) || 5000;
+      }
+
+      function getMsgTimeout(){
+        try{
+          const root = getComputedStyle(document.documentElement);
+          const t = root.getPropertyValue('--msg-total');
+          return parseCssTime(t);
+        }catch(e){ return 5000 }
+      }
+
+      function showMessage(text, status){
+        msgEl.textContent = text;
+        msgEl.className = 'submit-message show ' + (status === 'ok' ? 'success' : 'error');
+        msgEl.style.display = 'block';
+        clearTimeout(msgEl._hideTimeout);
+        const timeout = getMsgTimeout();
+        msgEl._hideTimeout = setTimeout(() => {
+          msgEl.className = 'submit-message';
+          msgEl.style.display = 'none';
+        }, timeout);
+      }
+
+      form.addEventListener('submit', async function(e){
         e.preventDefault();
-        alert('Thanks! We saved your signup locally (not submitted).');
+        const email = document.getElementById('email').value.trim();
+        const role = document.getElementById('interest').value;
+
+        if(!email){
+          showMessage('Please provide a valid email.', 'error');
+          return;
+        }
+
+        // If no endpoint provided, show message and return
+        if(!SUBMIT_ENDPOINT){
+          // Fallback: post to a local noop (or pretend to succeed)
+          showMessage('No endpoint configured — saved locally (demo).', 'ok');
+          return;
+        }
+
+        try{
+          const res = await fetch(SUBMIT_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, role: role })
+          });
+
+          if(res.ok){
+            showMessage('Thanks — you are on the list!', 'ok');
+            form.reset();
+          } else {
+            // Try to extract error message
+            let text = 'Submission failed';
+            try { const json = await res.json(); if(json && json.error) text = json.error; } catch(e){}
+            showMessage(text, 'error');
+          }
+        } catch(err){
+          showMessage('Network error — please try again.', 'error');
+        }
       });
     </script>
   </body>
