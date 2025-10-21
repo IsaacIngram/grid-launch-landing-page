@@ -114,9 +114,9 @@
         }
 
         // If no endpoint provided, show message and return
-        if(!SUBMIT_ENDPOINT || SUBMIT_ENDPOINT === '%SUBMIT_ENDPOINT%'){
+        if(!SUBMIT_ENDPOINT){
           // Fallback: endpoint not configured
-          showMessage('No endpoint configured — please contact support.', 'error');
+          showMessage('No endpoint configured — please get in touch at isaacingram@gridnil.com', 'error');
           return;
         }
 
