@@ -50,7 +50,23 @@ input[type=email], select{ width:100%; padding:12px 14px; height:44px; border-ra
 /* Styled select - remove native appearance and add custom arrow */
 select{ -webkit-appearance:none; -moz-appearance:none; appearance:none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath fill='%237A45E8' d='M7 10L0 0h14z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; background-size:12px; padding-right:38px }
 /* Slightly larger submit button */
-button{ background:var(--accent); color:#fff; border:none; padding:12px 20px; border-radius:8px; cursor:pointer; font-weight:700; font-size:0.98rem }
+button{ background:var(--accent); color:#fff; border:none; padding:12px 20px; border-radius:8px; cursor:pointer; font-weight:700; font-size:0.98rem; position:relative }
+button:disabled{ opacity:0.7; cursor:not-allowed }
+
+/* Spinner animation */
+.spinner{
+  display:inline-block;
+  width:16px;
+  height:16px;
+  border:2px solid rgba(255,255,255,0.3);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin 0.8s linear infinite;
+}
+
+@keyframes spin{
+  to{ transform:rotate(360deg) }
+}
 
 .signup-header{ margin-top:12px; margin-bottom: 5px; color:var(--accent); font-size:2rem; font-weight: 700}
 .signup-note{ margin-top:5px; color:var(--muted) }

@@ -30,7 +30,7 @@
 
       <section class="signup">
         <p class="signup-header">Interested? Sign up for updates.</p>
-        <p class="signup-note">You'll be notified when GRID launches so you can be one of the first to contribute to the platform.</p>
+        <p class="signup-note">You'll be notified when GRID launches so you can be one of the first on the platform.</p>
   <form id="signup-form" action="#" method="post" onsubmit="return false;">
           <div class="field">
             <label for="email">Email address</label>
@@ -48,7 +48,10 @@
 
           <div class="field">
             <label>&nbsp;</label>
-            <button type="submit">Submit</button>
+            <button type="submit" id="submit-btn">
+              <span class="btn-text">Submit</span>
+              <span class="spinner" style="display:none;"></span>
+            </button>
           </div>
         </form>
 
@@ -120,6 +123,14 @@
           return;
         }
 
+        // Show spinner and disable button
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const spinner = submitBtn.querySelector('.spinner');
+        submitBtn.disabled = true;
+        btnText.style.display = 'none';
+        spinner.style.display = 'inline-block';
+
         try{
           const res = await fetch(SUBMIT_ENDPOINT, {
             method: 'POST',
@@ -138,6 +149,11 @@
           }
         } catch(err){
           showMessage('Network error — please try again.', 'error');
+        } finally {
+          // Hide spinner and re-enable button
+          submitBtn.disabled = false;
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
         }
       });
     </script>
