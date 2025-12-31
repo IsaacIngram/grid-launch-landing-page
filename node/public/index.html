@@ -7,30 +7,56 @@
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
+    
     <main class="container">
+
       <header class="hero">
         <h1>Get on the GRID</h1>
         <p class="lead">From career growth to NIL deals, GRID unites athletes with the experts and brands that believe in their potential.</p>
       </header>
 
+    <div class="countdown-container">
+        <div id="countdown" class="countdown">
+          <div class="countdown-item">
+            <span id="days" class="countdown-value">00</span>
+            <span class="countdown-unit">Days</span>
+          </div>
+          <div class="countdown-item">
+            <span id="hours" class="countdown-value">00</span>
+            <span class="countdown-unit">Hours</span>
+          </div>
+          <div class="countdown-item">
+            <span id="minutes" class="countdown-value">00</span>
+            <span class="countdown-unit">Minutes</span>
+          </div>
+          <div class="countdown-item">
+            <span id="seconds" class="countdown-value">00</span>
+            <span class="countdown-unit">Seconds</span>
+          </div>
+        </div>
+        <div class="countdown-label">Until Official GRID Launch</div>
+      </div>
+
+
+      <p class="signup-header">Benefits of GRID</p>
       <section class="features">
         <div class="feature">
-          <h2>Athlete?</h2>
+          <h2>For Athletes</h2>
           <p>Manage your money and maximize your NIL opportunities with our trusted advisor network.</p>
         </div>
         <div class="feature">
-          <h2>Company?</h2>
+          <h2>For Companies</h2>
           <p>Collaborate with emerging talent, build brand loyalty, and be a part of the newest community sharing sports partnerships.</p>
         </div>
         <div class="feature">
-          <h2>Advisor?</h2>
+          <h2>For Advisors</h2>
           <p>Connect with driven young athletes who are seeking experts in money management and long-term planning.</p>
         </div>
       </section>
 
       <section class="signup">
         <p class="signup-header">Interested? Sign up for updates.</p>
-        <p class="signup-note">You'll be notified when GRID launches so you can be one of the first on the platform.</p>
+        <p class="signup-note">You'll receive updates as we develop GRID, and you'll be notified when GRID launches so you can be one of the first on the platform.</p>
   <form id="signup-form" action="#" method="post" onsubmit="return false;">
           <div class="field">
             <label for="email">Email address</label>
@@ -69,6 +95,33 @@
     <script>
       // Small client-side niceties and POST submit
       document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Countdown Timer - February 2nd, 2026 at 9AM Central Time
+      const launchDate = new Date('2026-02-02T09:00:00-06:00').getTime();
+
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = launchDate - now;
+
+        if (distance < 0) {
+          document.getElementById('countdown').innerHTML = '<div class="countdown-ended">We\'re live!</div>';
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById('days').textContent = String(days).padStart(2, '0');
+        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+      }
+
+      // Update countdown immediately and then every second
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
 
       // Get endpoint from Netlify environment variable injected at build time
       // Netlify will replace process.env.SUBMIT_ENDPOINT with the actual value
