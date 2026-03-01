@@ -3,93 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Get on the GRID</title>
+    <title>GRID - Coming Soon</title>
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
     
     <main class="container">
 
-      <header class="hero">
-        <h1>Get on the GRID</h1>
-        <p class="lead">From career growth to NIL deals, GRID unites athletes with the experts and brands that believe in their potential.</p>
+      <header class="construction-hero">
+        <h1>GRID</h1>
+        <div class="construction-icon">🚧</div>
+        <h2>Launch Coming Soon</h2>
+        <p class="construction-message">Please check back tomorrow morning to see what we have been building.</p>
       </header>
-
-    <div class="countdown-container">
-        <div id="countdown" class="countdown">
-          <div class="countdown-item">
-            <span id="days" class="countdown-value">00</span>
-            <span class="countdown-unit">Days</span>
-          </div>
-          <div class="countdown-item">
-            <span id="hours" class="countdown-value">00</span>
-            <span class="countdown-unit">Hours</span>
-          </div>
-          <div class="countdown-item">
-            <span id="minutes" class="countdown-value">00</span>
-            <span class="countdown-unit">Minutes</span>
-          </div>
-          <div class="countdown-item">
-            <span id="seconds" class="countdown-value">00</span>
-            <span class="countdown-unit">Seconds</span>
-          </div>
-        </div>
-        <div class="countdown-label">Until Official GRID Launch</div>
-      </div>
-
-
-      <p class="signup-header">Benefits of GRID</p>
-      <section class="features">
-        <div class="feature">
-          <h2>For Athletes</h2>
-          <p>Manage your money and maximize your NIL opportunities with our trusted advisor network.</p>
-        </div>
-        <div class="feature">
-          <h2>For Companies</h2>
-          <p>Collaborate with emerging talent, build brand loyalty, and be a part of the newest community sharing sports partnerships.</p>
-        </div>
-        <div class="feature">
-          <h2>For Advisors</h2>
-          <p>Connect with driven young athletes who are seeking experts in money management and long-term planning.</p>
-        </div>
-      </section>
-
-      <section class="signup">
-        <p class="signup-header">Interested? Sign up for updates.</p>
-        <p class="signup-note">You'll receive updates as we develop GRID, and you'll be notified when GRID launches so you can be one of the first on the platform.</p>
-  <form id="signup-form" action="#" method="post" onsubmit="return false;">
-          <div class="field">
-            <label for="email">Email address</label>
-            <input id="email" name="email" type="email" placeholder="you@example.com" required>
-          </div>
-
-          <div class="field">
-            <label for="interest">Your role</label>
-            <select id="interest" name="interest">
-              <option value="athlete">Athlete</option>
-              <option value="advisor">Advisor</option>
-              <option value="company">Company</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>&nbsp;</label>
-            <button type="submit" id="submit-btn">
-              <span class="btn-text">Submit</span>
-              <span class="spinner" style="display:none;"></span>
-            </button>
-          </div>
-        </form>
-
-        <div class="coming-soon">Coming soon</div>
-
-        <!-- Message area for submit feedback -->
-        <div id="submit-message" aria-live="polite" class="submit-message" style="display:none"></div>
-      </section>
-
-      <section class="contact">
-        <p>Questions? Contact the GRID team <a href="mailto:contact@gridnil.com">contact@gridnil.com</a></p>
-      </section>
     </main>
 
     <footer class="site-footer">
@@ -97,122 +23,8 @@
     </footer>
 
     <script>
-      // Small client-side niceties and POST submit
+      // Set current year in footer
       document.getElementById('year').textContent = new Date().getFullYear();
-
-      // Countdown Timer - February 2nd, 2026 at 9AM Central Time
-      const launchDate = new Date('2026-02-02T09:00:00-06:00').getTime();
-
-      function updateCountdown() {
-        const now = new Date().getTime();
-        const distance = launchDate - now;
-
-        if (distance < 0) {
-          document.getElementById('countdown').innerHTML = '<div class="countdown-ended">We\'re live!</div>';
-          return;
-        }
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById('days').textContent = String(days).padStart(2, '0');
-        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-      }
-
-      // Update countdown immediately and then every second
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-
-      // Get endpoint from Netlify environment variable injected at build time
-      // Netlify will replace process.env.SUBMIT_ENDPOINT with the actual value
-      const SUBMIT_ENDPOINT = '%SUBMIT_ENDPOINT%';
-
-      const form = document.getElementById('signup-form');
-      const msgEl = document.getElementById('submit-message');
-
-      function parseCssTime(s){
-        // simple parser: supports 'ms' and 's'
-        if(!s) return 5000;
-        s = s.trim();
-        if(s.endsWith('ms')) return parseFloat(s.slice(0, -2));
-        if(s.endsWith('s')) return parseFloat(s.slice(0, -1)) * 1000;
-        return parseFloat(s) || 5000;
-      }
-
-      function getMsgTimeout(){
-        try{
-          const root = getComputedStyle(document.documentElement);
-          const t = root.getPropertyValue('--msg-total');
-          return parseCssTime(t);
-        }catch(e){ return 5000 }
-      }
-
-      function showMessage(text, status){
-        msgEl.textContent = text;
-        msgEl.className = 'submit-message show ' + (status === 'ok' ? 'success' : 'error');
-        msgEl.style.display = 'block';
-        clearTimeout(msgEl._hideTimeout);
-        const timeout = getMsgTimeout();
-        msgEl._hideTimeout = setTimeout(() => {
-          msgEl.className = 'submit-message';
-          msgEl.style.display = 'none';
-        }, timeout);
-      }
-
-      form.addEventListener('submit', async function(e){
-        e.preventDefault();
-        const email = document.getElementById('email').value.trim();
-        const role = document.getElementById('interest').value;
-
-        if(!email){
-          showMessage('Please provide a valid email.', 'error');
-          return;
-        }
-
-        // If no endpoint provided, show message and return
-        if(!SUBMIT_ENDPOINT){
-          // Fallback: endpoint not configured
-          showMessage('No endpoint configured — please get in touch at isaacingram@gridnil.com', 'error');
-          return;
-        }
-
-        // Show spinner and disable button
-        const submitBtn = document.getElementById('submit-btn');
-        const btnText = submitBtn.querySelector('.btn-text');
-        const spinner = submitBtn.querySelector('.spinner');
-        submitBtn.disabled = true;
-        btnText.style.display = 'none';
-        spinner.style.display = 'inline-block';
-
-        try{
-          const res = await fetch(SUBMIT_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email, role: role })
-          });
-
-          if(res.ok){
-            showMessage('Thanks — you are on the list!', 'ok');
-            form.reset();
-          } else {
-            // Try to extract error message
-            let text = 'Submission failed';
-            try { const json = await res.json(); if(json && json.error) text = json.error; } catch(e){}
-            showMessage(text, 'error');
-          }
-        } catch(err){
-          showMessage('Network error — please try again.', 'error');
-        } finally {
-          // Hide spinner and re-enable button
-          submitBtn.disabled = false;
-          btnText.style.display = 'inline';
-          spinner.style.display = 'none';
-        }
-      });
     </script>
   </body>
 </html>
